@@ -8,10 +8,11 @@
 ## Assignment 2 edits
 ## Original script: Group 5 Assignment 1
 ## Secondary contributor: Ivrandeep Kour
+
 ## Edits made:
-## 1. Improved DNA transposon classification
-## 2. Added a chi-square test for Figure 2
-## 3. 
+## 1. Reduced repeated species-specific code
+## 2. Improved Figure 1 to compare TE copy percentage and base-pair percentage
+## 3. Added a chi-square test for Figure 2
 ##***************************
 
 #Testing Git Hub 
@@ -109,16 +110,29 @@ count(df_trich_div, species, matching_class)
 ####################
 ##### Plots ----####
 ####################
+## Edit 2:
+## Added base-pair percentage to Figure 1 for a more complete comparison.
 
 #Figure 1 - DNA Transposon vs Retrotransposon makeup between T. nelsoni and T. spiralis
 
-ggplot(df_te_summary, aes(x = species, y = pct_copies, fill = te_type)) +
+df_te_plot <- df_te_summary |>
+  pivot_longer(
+    cols = c(pct_copies, pct_bp),
+    names_to = "measure",
+    values_to = "percentage"
+  )
+
+ggplot(df_te_plot, aes(x = species, y = percentage, fill = te_type)) +
   geom_col() +
-  labs(x = NULL, y = "% of TE copies", fill = NULL,
-       title = "DNA transposons vs. Retrotransposons in Trichinella species") +
+  facet_wrap(~measure) +
+  labs(
+    x = NULL,
+    y = "Percentage",
+    fill = NULL,
+    title = "DNA transposons vs. Retrotransposons in Trichinella species"
+  ) +
   scale_fill_viridis_d(option = "viridis") +
   theme_minimal()
-ggsave("../output/2026-11-01_Fig1_retro_transpo_comparison.png", width = 6, dpi=600) 
 
 #Figure 2 2 - Retrotransposon class composition between T. nelsoni and T. spiralis
 ggplot(df_retros_long, aes(x = matching_class, y = Count, fill = `Species`)) +
@@ -128,7 +142,7 @@ ggplot(df_retros_long, aes(x = matching_class, y = Count, fill = `Species`)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
 ggsave("../output/2026-11-01_Fig2_retro_comparison.png", width = 8, dpi=600) 
 
-## Edit 2:
+## Edit 3:
 ## Added a chi-square test to compare major retrotransposon classes between species.
 
 df_retro_test <- df_trich_te |>
