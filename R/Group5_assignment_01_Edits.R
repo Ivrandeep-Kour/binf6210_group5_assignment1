@@ -10,13 +10,14 @@
 ## Secondary contributor: Ivrandeep Kour
 ## Edits made:
 ## 1. Improved DNA transposon classification
-## 2. 
+## 2. Added a chi-square test for Figure 2
 ## 3. 
 ##***************************
 
 #Testing Git Hub 
 
 ## _ Packages used -------
+
 library(tidyverse)
 library(ggplot2)
 conflicted::conflicts_prefer(dplyr::filter())
@@ -126,6 +127,19 @@ ggplot(df_retros_long, aes(x = matching_class, y = Count, fill = `Species`)) +
   labs(title = "Retrotransposon composition between T. spiralis and T. nelsoni", x = "Retrotransposon class", y = "Number of Retrotransposons") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
 ggsave("../output/2026-11-01_Fig2_retro_comparison.png", width = 8, dpi=600) 
+
+## Edit 2:
+## Added a chi-square test to compare major retrotransposon classes between species.
+
+df_retro_test <- df_trich_te |>
+  filter(matching_class %in% ls_retro_subset)
+
+retro_counts <- table(
+  df_retro_test$species,
+  df_retro_test$matching_class
+)
+
+chisq.test(retro_counts)
 
 #Figure 3 - Percent divergence between certain retrotransposons between T. nelsoni and T. spiralis
 ggplot(df_trich_div, aes(x = perc_div, fill = species)) +
