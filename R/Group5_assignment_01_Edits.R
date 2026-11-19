@@ -5,7 +5,7 @@
 ## Group 5
 #### 2026-11-02
 
-## Assignment 2 edits
+## Assignment 2 :Edits
 ## Original script: Group 5 Assignment 1
 ## Secondary contributor: Ivrandeep Kour
 
@@ -30,8 +30,8 @@ theme_set(theme_light())
 #####################
 
 #Import the csv files
-df_spiralis_te = read.csv("../data/GCA_001447595.1.csv")
-df_nelsoni_te = read.csv("../data/GCA_001447455.1.csv")
+df_spiralis_te = read.csv("data/GCA_001447595.1.csv")
+df_nelsoni_te = read.csv("data/GCA_001447455.1.csv")
 
 #Filter out the subsets of Retrotransposons from transposons
 ls_retro_te = c("LINE/CR1", "LINE/RTE-BovB", "LTR/DIRS", "LTR/Gypsy", "LTR/Ngaro", "LTR/Pao", "PLE", "PLE/Naiad", "SINE/tRNA-Deu-L2", "SINE/tRNA-RTE")
@@ -134,13 +134,19 @@ ggplot(df_te_plot, aes(x = species, y = percentage, fill = te_type)) +
   scale_fill_viridis_d(option = "viridis") +
   theme_minimal()
 
+ggsave(
+  "Output/2026-11-01_Fig1_retro_transpo_comparison.png",
+  width = 6,
+  dpi = 600
+)
+
 #Figure 2 2 - Retrotransposon class composition between T. nelsoni and T. spiralis
 ggplot(df_retros_long, aes(x = matching_class, y = Count, fill = `Species`)) +
   geom_col(position = "dodge") +
   scale_fill_viridis_d(option = "viridis") +
   labs(title = "Retrotransposon composition between T. spiralis and T. nelsoni", x = "Retrotransposon class", y = "Number of Retrotransposons") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 0.5))
-ggsave("../output/2026-11-01_Fig2_retro_comparison.png", width = 8, dpi=600) 
+ggsave("Output/2026-11-01_Fig2_retro_comparison.png", width = 8, dpi=600)
 
 ## Edit 3:
 ## Added a chi-square test to compare major retrotransposon classes between species.
@@ -163,7 +169,7 @@ ggplot(df_trich_div, aes(x = perc_div, fill = species)) +
        title = "Repeat landscape for select retrotransposons in Trichinella species") +
   scale_fill_viridis_d(option = "viridis") +
   theme_dark()
-ggsave("../output/2026-11-01_Fig3_retro_percdel_comparison.png", width = 8, dpi=600) 
+ggsave("Output/2026-11-01_Fig3_retro_percdel_comparison.png", width = 8, dpi=600) 
 
 #####################
 ##### Stats-----#####
@@ -246,3 +252,4 @@ p.adjust(ls_ks_pvalues, method = "bonferroni")
 # 1.0000000 
 
 rm(ks_cr1, ks_nai, ks_pao, ks_ple, ks_gypsy)
+
